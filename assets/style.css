@@ -13,3 +13,11 @@ body {
     align-items: center;
     font-weight: bold;
 }
+
+.btn {
+    background-color: blue;
+    color: white;
+    height: 30px;
+    width: 30px;
+    border-radius: 5px;
+}
