@@ -2,6 +2,11 @@ body {
     font-family: Helvetica, Arial, sans-serif;
 }
 
+.left-column {
+    background-color: lightblue;
+    border: 10px
+}
+
 .header {
     background-color: gray;
     color: white;
