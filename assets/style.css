@@ -33,3 +33,22 @@ body {
     height: 25px;
     width: 35px;
 }
+
+.red {
+    background-color: red;
+    color: white;
+    height: 25px;
+    width: 35px;
+}
+
+.orange {
+    background-color: orange;
+    color: white;
+    height: 25px;
+    width: 35px;
+}
+
+.card {
+    background-color: blue;
+    color: white;
+}

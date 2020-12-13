@@ -1,50 +1,20 @@
-//var cityInputEl = document.querySelector("#city-name")
-
-// var currentWeather = function(enterCity) {
-//     var apiUrl = "https://api.openweathermap.org/data/2.5/weather?q=" + enterCity + "&appid=68f020b4f6e1a04e44f3257ce0fccc9e&cnt=5";
-    
-//     //make a request to the url
-//     fetch(apiUrl).then(function(resp) {
-//         return resp.json() })
-//         .then(function(data) {
-//             console.log(data);
-//         })
-//         .catch(function() {
-//         //displayRepos(data,user);
-//         });
-        
-//     };
-
-
-//     $("btnSearch").click(currentWeather)
-
-// var buttonClickHandler = function(event) {
-//     var userInput = event.target.getAttribute("city-name")
-//     console.log(userInput);
-        
-    // //if (userInput) {
-    //     getCityName(userInput);
-    //     //clear old content
-    //     repoContainerEl.textContent="";
-    // }
-    // }
-
-    //addEventListener("click", buttonClickHandler);
-
-// $(document).ready(function() {
-
-//});
-
 
 $("#btnSearch").click(function(event){
    event.preventDefault() 
    var enterCity = $("#cityName").val()
+
+   //if (userInput) {
+         //getCityName(userInput);
+         //clear old content
+    //repoContainerEl.textContent="";
    
 
    $.get("https://api.openweathermap.org/data/2.5/weather?q=" + enterCity + "&appid=68f020b4f6e1a04e44f3257ce0fccc9e&units=imperial")
    .then(function(data){
     
-    
+        $("#date").text(moment().format("LLLL"));
+        
+
        $('#location').append(data.name);
        $("#weather-icon").append(iconCode);
        $('#temp').append(data.main.temp);
@@ -58,6 +28,8 @@ $("#btnSearch").click(function(event){
 
        getUvIndex(data.coord.lat, data.coord.lon);
 
+       getForecast(data.coord.lat, data.coord.lon);
+
        //call 5-day function()
 
        });
@@ -67,9 +39,9 @@ $("#btnSearch").click(function(event){
 });
 
 function getUvIndex(lat, lon) {
-    fetch(
-      "http://api.openweathermap.org/data/2.5/uvi?lat=" + lat + "&lon=" + lon + "&appid=68f020b4f6e1a04e44f3257ce0fccc9e"
-    )
+    var apiUvIndex = "http://api.openweathermap.org/data/2.5/uvi?lat=" + lat + "&lon=" + lon + "&appid=68f020b4f6e1a04e44f3257ce0fccc9e&units=imperial&cnt=5"
+    fetch(apiUvIndex)
+    
       .then(function (data) {
         return data.json();
       })
@@ -78,68 +50,51 @@ function getUvIndex(lat, lon) {
         $('#uv-index').append(data.value);
         if (data.value <3) {
             $("#color").addClass("green");
-            //add class list green
         }
 
         else if (data.value >8) {
-          //add class list red  
+            $("#color").addClass("red");
         } 
 
         else {
-            //add class list orange
+            $("#color").addClass("orange");
         }
      });
 
         
     }
 
-// function createWeatherJson(json) {
-//     var newJson = "";
-//     for (i = 0; i < json.list.length; i++) {
-//     cityName = json.list[i].name;
-//     temp = json.list[i].main.temp
-//     humidity = json.list[i].main.humidity
-//     wind = json.list[i].wind.speed
-//     console.log(newJson);
-    
-//     newJson = newJson + "\"cityName\"" + ": " + "\"" + cityName + "\"" + ","
-//     newJson = newJson + "\"temp\"" + ": " + temp + ","
-//     newJson = newJson + "\"humidity\"" + ": " + humidity + ","
-//     newJson = newJson + "\"wind\"" + ": " + wind 
-//     newJson = newJson + "},"; 
-//     };
-
-//     return "[" + newJson.slice(0, newJson.length -1) + "]"
-// };
-        //console.log(data);
-        //debugger
-
-               
-        //create a container for current weather condition
-    //     var selectedCityEl = document.createElement("h2");
-    //    var titleEl = document.getElementById("right-column").innerHTML = enterCity;
-
-        //get the name, date, icon representation of conditions, temp, humidity, wind speed, UV index from API
-
-        //display API info on page
+function getForecast(lat, lon) {
+    var apiUrlFive = "https://api.openweathermap.org/data/2.5/onecall?lat=" + lat + "&lon=" + lon + "&exclude=current,minutely,hourly,alerts&appid=68f020b4f6e1a04e44f3257ce0fccc9e&units=imperial";
+    fetch(apiUrlFive)
+    .then(function(data) {
+        return data.json();
+    })
+    .then(function(data) {
+        console.log(data);
         
-    
-        //append to container
-        //selectedCityEl.appendChild(titleEl);
-        
-        
-        //add color to uv index--favorable, moderate, or severe
+        var forecastCards = document.getElementById("forecastCards")
 
-        //create cards to hold 5-day forecast
+        for (var i = 0; i < 5; i++) {
 
-        //make api call for forecast
+            var cardDiv = document.createElement("div")
+            
+            var parDate = document.createElement("p")
+            parDate.innerHTML = "Date: " + data.daily[i].dt
+            cardDiv.appendChild(parDate)
+            var imgIcon = document.createElement("img")
+            imgIcon.src = "https://openweathermap.org/img/w/" + data.daily[i].weather[0].icon + ".png"
+            cardDiv.appendChild(imgIcon)
+            var parTemp = document.createElement("p")
+            parTemp.innerHTML = "Temperature: " + data.daily[i].temp.day
+            cardDiv.appendChild(parTemp)
+            var parHumidity = document.createElement("p")
+            parHumidity.innerHTML = "Humidity: " + data.daily[i].humidity
+            cardDiv.appendChild(parHumidity)
 
-        //store data
-  // })
+            forecastCards.appendChild(cardDiv);
+        }
 
 
-
-//console.log(createWeatherJson);
-
-
-//};
+    })
+}
