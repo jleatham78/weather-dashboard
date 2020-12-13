@@ -1,20 +1,11 @@
 
 $("#btnSearch").click(function(event){
-   event.preventDefault() 
+    event.preventDefault() 
    var enterCity = $("#cityName").val()
 
    localStorage.setItem('#cityName', enterCity);
    
-    //storeCityNames()
-   //if (userInput) {
-         //getCityName(userInput);
-         //clear old content
-    //repoContainerEl.textContent="";
-    //$("#cityStorage").val(localStorage.getItem("#cityName"));
-
-    //cityStorage.appendChild("#cityName")
    
-
    $.get("https://api.openweathermap.org/data/2.5/weather?q=" + enterCity + "&appid=68f020b4f6e1a04e44f3257ce0fccc9e&units=imperial")
    .then(function(data){
     
@@ -37,6 +28,9 @@ $("#btnSearch").click(function(event){
        getForecast(data.coord.lat, data.coord.lon);
 
        renderCities();
+
+       //$( ".col-9" ).empty();
+
 
        });
        
@@ -111,19 +105,9 @@ function getForecast(lat, lon) {
 function renderCities() {
 
     var getCity = localStorage.getItem('cityName');
-    //getCity.innerHTML = cityName
-    // Empties out the html
+  
     document.getElementById("cityName").value = "";
 
-
-    // Iterates over the 'list'
-//for (var i = 0; i < getCity.length; i++) {
-      // Creates a new variable 'toDoItem' that will hold a "<p>" tag
-      // Sets the `list` item's value as text of this <p> element
-      //var listCity = $('<p>');
-      //listCity.text(getCity[i]);
-
-      // Adds 'toDoItem' to the To-Do List div
       $('#cityStorage').append(getCity);
     }
 
