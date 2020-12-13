@@ -3,10 +3,16 @@ $("#btnSearch").click(function(event){
    event.preventDefault() 
    var enterCity = $("#cityName").val()
 
+   localStorage.setItem('#cityName', enterCity);
+   
+    //storeCityNames()
    //if (userInput) {
          //getCityName(userInput);
          //clear old content
     //repoContainerEl.textContent="";
+    //$("#cityStorage").val(localStorage.getItem("#cityName"));
+
+    //cityStorage.appendChild("#cityName")
    
 
    $.get("https://api.openweathermap.org/data/2.5/weather?q=" + enterCity + "&appid=68f020b4f6e1a04e44f3257ce0fccc9e&units=imperial")
@@ -25,12 +31,12 @@ $("#btnSearch").click(function(event){
         $("#weather-icon").attr("src", "https://openweathermap.org/img/w/" + iconCode + ".png");
 
        
-
+        
        getUvIndex(data.coord.lat, data.coord.lon);
 
        getForecast(data.coord.lat, data.coord.lon);
 
-       //call 5-day function()
+       renderCities();
 
        });
        
@@ -74,6 +80,9 @@ function getForecast(lat, lon) {
         console.log(data);
         
         var forecastCards = document.getElementById("forecastCards")
+        var header = document.createElement("h2")
+        header.innerHTML = "5-Day Forecast"
+        forecastCards.appendChild(header)
 
         for (var i = 0; i < 5; i++) {
 
@@ -86,7 +95,7 @@ function getForecast(lat, lon) {
             imgIcon.src = "https://openweathermap.org/img/w/" + data.daily[i].weather[0].icon + ".png"
             cardDiv.appendChild(imgIcon)
             var parTemp = document.createElement("p")
-            parTemp.innerHTML = "Temperature: " + data.daily[i].temp.day
+            parTemp.innerHTML = "Temperature: " + data.daily[i].temp.day + " F"
             cardDiv.appendChild(parTemp)
             var parHumidity = document.createElement("p")
             parHumidity.innerHTML = "Humidity: " + data.daily[i].humidity
@@ -95,6 +104,28 @@ function getForecast(lat, lon) {
             forecastCards.appendChild(cardDiv);
         }
 
-
     })
 }
+
+
+function renderCities() {
+
+    var getCity = localStorage.getItem('cityName');
+    //getCity.innerHTML = cityName
+    // Empties out the html
+    document.getElementById("cityName").value = "";
+
+
+    // Iterates over the 'list'
+//for (var i = 0; i < getCity.length; i++) {
+      // Creates a new variable 'toDoItem' that will hold a "<p>" tag
+      // Sets the `list` item's value as text of this <p> element
+      //var listCity = $('<p>');
+      //listCity.text(getCity[i]);
+
+      // Adds 'toDoItem' to the To-Do List div
+      $('#cityStorage').append(getCity);
+    }
+
+    
+  
