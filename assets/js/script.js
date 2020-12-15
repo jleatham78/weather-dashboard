@@ -39,7 +39,7 @@ $("#btnSearch").click(function(event){
 });
 
 function getUvIndex(lat, lon) {
-    var apiUvIndex = "http://api.openweathermap.org/data/2.5/uvi?lat=" + lat + "&lon=" + lon + "&appid=68f020b4f6e1a04e44f3257ce0fccc9e&units=imperial&cnt=5"
+    var apiUvIndex = "https://api.openweathermap.org/data/2.5/uvi?lat=" + lat + "&lon=" + lon + "&appid=68f020b4f6e1a04e44f3257ce0fccc9e&units=imperial&cnt=5"
     fetch(apiUvIndex)
     
       .then(function (data) {
