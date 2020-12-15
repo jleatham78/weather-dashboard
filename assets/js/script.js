@@ -39,7 +39,7 @@ $("#btnSearch").click(function(event){
 });
 
 function getUvIndex(lat, lon) {
-    var apiUvIndex = "https://api.openweathermap.org/data/2.5/uvi?lat=" + lat + "&lon=" + lon + "&appid=68f020b4f6e1a04e44f3257ce0fccc9e&units=imperial&cnt=5"
+    var apiUvIndex = "https://api.openweathermap.org/data/2.5/onecall?lat=" + lat + "&lon=" + lon + "&exclude=minutely,hourly,daily,alerts&appid=68f020b4f6e1a04e44f3257ce0fccc9e";
     fetch(apiUvIndex)
     
       .then(function (data) {
@@ -47,12 +47,13 @@ function getUvIndex(lat, lon) {
       })
       .then(function (data) {
         console.log(data);
-        $('#uv-index').append(data.value);
-        if (data.value <3) {
+        $('#uv-index').append(data.current.uvi);
+
+        if (data.current.uvi <3) {
             $("#color").addClass("green");
         }
 
-        else if (data.value >8) {
+        else if (data.current.uvi >8) {
             $("#color").addClass("red");
         } 
 
